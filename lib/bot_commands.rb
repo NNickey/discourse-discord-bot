@@ -29,7 +29,6 @@ module ::DiscordBot::BotCommands
         discordusers << { discord_user_id: t.user_id, provider_uid: t.provider_uid }
       end
       bot.send_message(SiteSetting.discord_bot_admin_channel_id, "received command")
-      bot.send_message(SiteSetting.discord_bot_admin_channel_id, print_r(builder.query, true))
       m.edit "Checked! Your id is #{event.user.id}! Role status is #{discordusers}"
     end
 
