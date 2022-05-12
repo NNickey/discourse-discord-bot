@@ -8,13 +8,23 @@ module ::DiscordBot::BotCommands
 
     # '!disckick' - a command to copy message history to Topics in Discourse
     
+    bot.command(:eeval, help_available: false) do |event, *code|
+      break unless event.user.id == 92368969305952256 # Replace number with your ID
+
+      begin
+        event.respond eval code.join(' ')
+      rescue event.respond 'An error occurred 😞'
+      end
+    end
+    
     bot.message(with_text: '!!!check') do |event|
       discordusers = []
 
       m = event.respond "Checking for your Forum account."
 
-      builder = DB.build("select * from user_associated_accounts /*where*/")
-      builder.where("provider_name = :provider_name and provider_uid = :provider_ID", provider_name: "discord", provider_ID: event.user.id)
+      builder = DB.build("select * from user_associated_accounts /*where*/ and /*whereid*/")
+      builder.where("provider_name = :provider_name and provider_uid = :provider_ID", provider_name: "discord")
+      builder.whereid("provider_uid = :provider_ID", provider_ID: event.user.id)
       builder.query.each do |t|
         discordusers << { discord_user_id: t.user_id, provider_uid: t.provider_uid }
       end
