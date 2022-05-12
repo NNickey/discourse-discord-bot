@@ -9,7 +9,18 @@ module ::DiscordBot::BotCommands
     # '!disckick' - a command to copy message history to Topics in Discourse
     
     bot.message(with_text: '!!!check') do |event|
-      event.respond event
+      discordusers = []
+
+      m = event.respond('Pong!')
+      
+      event.respond "Checking for your Forum account."
+
+      builder = DB.build("select Exists(select provider_name, provider_uid, user_id, last_used from user_associated_accounts /*where*/)")
+      builder.where("provider_name = :provider_name and provider_uid = :provider_ID", provider_name: "discord", provider_ID: event.user.id)
+      builder.query.each do |t|
+        discordusers << { discord_user_id: t.user_id, provider_uid: t.provider_uid }
+      end
+      m.edit "Checked! Your id is #{event.user.id}! Role status is #{discordusers}"
     end
 
     bot.command(:disccopy, min_args: 1, max_args: 3, bucket: :admin_tasks, rate_limit_message: I18n.t("discord_bot.commands.rate_limit_breached"), required_roles: [SiteSetting.discord_bot_admin_role_id], description: I18n.t("disccopy.description")) do |event, number_of_past_messages, target_category, target_topic|
