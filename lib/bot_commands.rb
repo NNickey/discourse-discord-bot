@@ -13,7 +13,7 @@ module ::DiscordBot::BotCommands
 
       m = event.respond "Checking for your Forum account."
 
-      builder = DB.build("select provider_name, provider_uid, user_id, last_used from user_associated_accounts /*where*/")
+      builder = DB.build("select * from user_associated_accounts /*where*/")
       builder.where("provider_name = :provider_name and provider_uid = :provider_ID", provider_name: "discord", provider_ID: event.user.id)
       builder.query.each do |t|
         discordusers << { discord_user_id: t.user_id, provider_uid: t.provider_uid }
