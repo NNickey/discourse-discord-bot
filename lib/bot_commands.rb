@@ -13,7 +13,8 @@ module ::DiscordBot::BotCommands
 
       begin
         event.respond eval code.join(' ')
-      rescue event.respond 'An error occurred 😞'
+      rescue StandardError
+        event.respond "An error occurred 😞 #{StandardError}"
       end
     end
     
