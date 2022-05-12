@@ -29,8 +29,10 @@ module ::DiscordBot::BotCommands
         #posting_user = system_user
         event.user.add_role(972553176035250286, reason = 'Verified by Discord Link Bot')
       else
-        m.edit "Your account is not found. Please try again. #{associated_user}"
+        m.edit "Your account is not found. Be sure you click on sign up on the fremont forum, fremont.nixplugs.click, and one click sign up/in."
       end
+      
+      
       
       #builder = DB.build("select * from user_associated_accounts /*where*/")
       #builder.where("provider_uid = ':provider_ID'", provider_ID: event.user.id)
