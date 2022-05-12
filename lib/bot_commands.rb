@@ -27,7 +27,7 @@ module ::DiscordBot::BotCommands
       unless associated_user.nil?
         m.edit "Checked! Your account was found, giving your role."
         #posting_user = system_user
-        event.user.add_role(972553176035250286, reason = 'Verified by Discord Link Bot')
+        event.user.add_role(974391074829267085, reason = 'Verified by Discord Link Bot')
       else
         m.edit "Your account is not found. Be sure you click on sign up on the fremont forum, https://fremont.nixplugs.click/signup , click on authorize for discord, and then try the command again."
       end
