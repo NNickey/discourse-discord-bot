@@ -5,7 +5,7 @@ class ::DiscordBot::Bot
   @@DiscordBot = nil
 
   def self.init
-    @@DiscordBot = Discordrb::Commands::CommandBot.new token: SiteSetting.discord_bot_token, prefix: '!'
+    @@DiscordBot = Discordrb::Commands::CommandBot.new token: SiteSetting.discord_bot_token, prefix: '!!!'
 
     @@DiscordBot.ready do |event|
       puts "Logged in as #{@@DiscordBot.profile.username} (ID:#{@@DiscordBot.profile.id}) | #{@@DiscordBot.servers.size} servers"
