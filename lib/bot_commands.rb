@@ -23,13 +23,23 @@ module ::DiscordBot::BotCommands
 
       m = event.respond "Checking for your Forum account."
 
-      builder = DB.build("select * from user_associated_accounts /*where*/")
-      builder.where("provider_uid = ':provider_ID'", provider_ID: event.user.id)
-      builder.query.each do |t|
-        discordusers << { discord_user_id: t.user_id, provider_uid: t.provider_uid }
+      associated_user = UserAssociatedAccount.find_by(provider_uid: event.user.id)
+      unless associated_user.nil?
+        m.edit "Your account is not found. Please try again."
+      else
+        m.edit "Checked! Your account was found, giving your role."
+        #posting_user = system_user
+        event.user.add_role(972553176035250286, reason = 'Verified by Discord Link Bot')
       end
-      bot.send_message(SiteSetting.discord_bot_admin_channel_id, "received command")
-      m.edit "Checked! Your id is #{event.user.id}! Role status is #{discordusers}"
+      
+      #builder = DB.build("select * from user_associated_accounts /*where*/")
+      #builder.where("provider_uid = ':provider_ID'", provider_ID: event.user.id)
+      #builder.query.each do |t|
+      #  discordusers << { discord_user_id: t.user_id, provider_uid: t.provider_uid }
+      #end
+      # bot.send_message(SiteSetting.discord_bot_admin_channel_id, "received command")
+      #isvalid = discordusers[0] && discordusers[0].:provider_uid
+      #m.edit "Checked! Your id is #{event.user.id}! Role status is #{discordusers}"
     end
 
     bot.command(:disccopy, min_args: 1, max_args: 3, bucket: :admin_tasks, rate_limit_message: I18n.t("discord_bot.commands.rate_limit_breached"), required_roles: [SiteSetting.discord_bot_admin_role_id], description: I18n.t("disccopy.description")) do |event, number_of_past_messages, target_category, target_topic|
