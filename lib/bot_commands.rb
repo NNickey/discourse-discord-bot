@@ -25,11 +25,11 @@ module ::DiscordBot::BotCommands
 
       associated_user = UserAssociatedAccount.find_by(provider_uid: event.user.id)
       unless associated_user.nil?
-        m.edit "Your account is not found. Please try again."
-      else
-        m.edit "Checked! Your account was found, giving your role."
+        m.edit "Checked! Your account was found, giving your role. #{associated_user}"
         #posting_user = system_user
         event.user.add_role(972553176035250286, reason = 'Verified by Discord Link Bot')
+      else
+        m.edit "Your account is not found. Please try again. #{associated_user}"
       end
       
       #builder = DB.build("select * from user_associated_accounts /*where*/")
