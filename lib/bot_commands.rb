@@ -7,6 +7,10 @@ module ::DiscordBot::BotCommands
     bot.bucket :admin_tasks, limit: 3, time_span: 60, delay: 10
 
     # '!disckick' - a command to copy message history to Topics in Discourse
+    
+    bot.message(with_text: '!!!check') do |event|
+      event.respond event
+    end
 
     bot.command(:disccopy, min_args: 1, max_args: 3, bucket: :admin_tasks, rate_limit_message: I18n.t("discord_bot.commands.rate_limit_breached"), required_roles: [SiteSetting.discord_bot_admin_role_id], description: I18n.t("disccopy.description")) do |event, number_of_past_messages, target_category, target_topic|
       past_messages = []
