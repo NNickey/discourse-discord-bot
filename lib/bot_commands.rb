@@ -13,11 +13,13 @@ module ::DiscordBot::BotCommands
 
       m = event.respond "Checking for your Forum account."
 
-      builder = DB.build("select Exists(select provider_name, provider_uid, user_id, last_used from user_associated_accounts /*where*/)")
+      builder = DB.build("select provider_name, provider_uid, user_id, last_used from user_associated_accounts /*where*/")
       builder.where("provider_name = :provider_name and provider_uid = :provider_ID", provider_name: "discord", provider_ID: event.user.id)
       builder.query.each do |t|
         discordusers << { discord_user_id: t.user_id, provider_uid: t.provider_uid }
       end
+      bot.send_message(SiteSetting.discord_bot_admin_channel_id, "received command")
+      bot.send_message(SiteSetting.discord_bot_admin_channel_id, print_r(builder.query, true))
       error_log("!!!check ran");
       error_log(print_r(event));
       error_log(print_r(builder.query, true));
